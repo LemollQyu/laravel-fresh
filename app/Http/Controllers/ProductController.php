@@ -13,7 +13,8 @@ class ProductController extends Controller
         $user = User::find(2);
 
         return view('product', [
-            'products' => $user->products,
+
+            'products' => $user->products, //ini adlah termasuk lazy loading
         ]);
     }
 

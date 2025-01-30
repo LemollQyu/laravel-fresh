@@ -191,14 +191,33 @@ class TestingController extends Controller
         // edngan eigher loading
         // mempersingkat ketika query, jadi tidak makan waktu lama, atau query pendek\
         // berguna untuk efisiensi query
-        $users = \App\Models\User::with(['products'])->get();
-        foreach($users as $user) {
-            dump($user->products->pluck('name'));
-        }
+        // $users = \App\Models\User::with(['products'])->get();
+        // foreach($users as $user) {
+        //     dump($user->products->pluck('name'));
+        // }
 
         // foreach($users as $user) {
         //     dump($user->products->pluck('name'));
         // }
+
+
+        // DB Transaction
+        // ini memungkinkan data yang masuk harus benar semua
+        // jadi semisal ada query yang bisa, dan ada query yang tidak bisa, maka yang terjadi itu query tidak akan dijalnakan semuanya, karena ada query yang error
+        \DB::transaction(function () {
+            $user = User::create([
+                'name' => 'Putri',
+                'email' => 'putri@gmail.com',
+                'password' => bcrypt('password'),
+            ]);
+
+
+            $product = $user->barangs()->create([
+                'name' => 'Tas Plastik',
+                'discription' => 'kurang branded banget tasnya',
+            ]);
+        });
+
 
 
 
